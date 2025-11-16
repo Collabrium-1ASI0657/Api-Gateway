@@ -41,3 +41,9 @@ eureka:
   client:
     service-url:
       defaultZone: https://discovery-server-synhub.onrender.com/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

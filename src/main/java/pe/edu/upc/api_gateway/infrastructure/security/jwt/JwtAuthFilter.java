@@ -24,7 +24,10 @@ public class JwtAuthFilter implements WebFilter {
     String path = exchange.getRequest().getPath().value();
 
     // Rutas públicas que NO requieren JWT
-    if (path.startsWith("/iam")) {
+    if (path.startsWith("/iam") ||
+        path.equals("/ping") ||
+        path.equals("/actuator/health") ||
+        path.startsWith("/actuator")) {
       return chain.filter(exchange);
     }
 
