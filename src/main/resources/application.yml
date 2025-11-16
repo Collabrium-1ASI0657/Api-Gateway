@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: gateway-server
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true          # Usa Eureka para descubrir servicios automáticamente
+          lower-case-service-id: true
+
+      routes:
+        # IAM service - público
+        - id: iam-service
+          uri: lb://iam-service
+          predicates:
+            - Path=/iam/**
+          filters:
+            - StripPrefix=1
+
+        # GROUPS service - privado
+        - id: groups-service
+          uri: lb://groups-service
+          predicates:
+            - Path=/groups/**
+          filters:
+            - StripPrefix=1
+
+        # TASKS service - privado
+        - id: tasks-service
+          uri: lb://tasks-service
+          predicates:
+            - Path=/tasks/**
+          filters:
+            - StripPrefix=1
+
+server:
+  port: ${PORT:8080}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: https://discovery-server-synhub.onrender.com/eureka/
